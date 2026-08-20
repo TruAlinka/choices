@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Interactive game</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Roboto+Slab:wght@400;700&family=Rye&family=Special+Elite&display=swap"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow-x: hidden;
+      background: transparent;
+    }
+
+    body {
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    #app {
+      min-height: 100vh;
+      padding: 12px;
+
+      display: grid;
+      place-items: center;
+    }
+
+    .card {
+      position: relative;
+
+      width: 100%;
+      min-height: calc(100vh - 24px);
+
+      overflow: hidden;
+      border-radius: 18px;
+
+      background-size: cover;
+      background-position: center;
+    }
+
+    .video {
+      position: absolute;
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+
+      padding: clamp(20px, 5vw, 48px);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .shade {
+      background:
+        linear-gradient(
+          180deg,
+          rgba(7, 16, 29, 0.08),
+          rgba(7, 16, 29, 0.92) 84%
+        );
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 10px 0 20px;
+
+      font-family: var(--heading);
+
+      font-size: clamp(27px, 5vw, 54px);
+      line-height: 1.15;
+    }
+
+    p {
+      font-size: clamp(15px, 2vw, 20px);
+      line-height: 1.55;
+    }
+
+    .story {
+      padding: clamp(18px, 4vw, 34px);
+    }
+
+    .style-none {
+      padding: 0;
+    }
+
+    .style-vintage {
+      border: 3px solid var(--border);
+      border-radius: 16px;
+
+      color: #f7e4c8;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(20, 11, 8, 0.96),
+          rgba(35, 18, 12, 0.93)
+        );
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.67),
+        inset 0 0 30px
+          rgba(111, 55, 26, 0.2);
+    }
+
+    .style-glass {
+      border: 1px solid
+        rgba(255, 255, 255, 0.33);
+
+      border-radius: 18px;
+
+      background:
+        rgba(255, 255, 255, 0.09);
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4);
+
+      backdrop-filter: blur(12px);
+    }
+
+    .style-neon {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+
+      background: rgba(6, 11, 24, 0.86);
+
+      box-shadow:
+        0 0 10px var(--border),
+        inset 0 0 18px #000;
+    }
+
+    .style-parchment {
+      border: 2px solid #79552f;
+      border-radius: 4px;
+
+      color: #332414;
+      background: rgba(234, 215, 171, 0.92);
+
+      box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.53);
+    }
+
+    .answers {
+      display: grid;
+      gap: 9px;
+      margin-top: 16px;
+    }
+
+    .answer {
+      width: 100%;
+      padding: 14px 17px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: #fff;
+      text-align: left;
+    }
+
+    .answer-standard {
+      border: 1px solid
+        rgba(255, 255, 255, 0.21);
+
+      background:
+        rgba(17, 24, 39, 0.77);
+    }
+
+    .answer-vintage {
+      border: 2px solid var(--border);
+
+      color: #f7e4c8;
+      background: rgba(26, 13, 9, 0.91);
+    }
+
+    .answer-double {
+      border: 4px double var(--border);
+
+      background:
+        rgba(17, 24, 39, 0.79);
+    }
+
+    .answer-neon {
+      border: 1px solid var(--border);
+
+      background:
+        rgba(7, 16, 29, 0.9);
+
+      box-shadow:
+        0 0 7px var(--border);
+    }
+
+    .answer-dashed {
+      border: 2px dashed var(--border);
+
+      background:
+        rgba(17, 24, 39, 0.67);
+    }
+
+    .answer-text {
+      border: 0;
+      border-bottom: 1px solid var(--border);
+
+      border-radius: 0 !important;
+      background: transparent;
+    }
+
+    .answer:hover {
+      color: #101827;
+      background: var(--accent);
+    }
+
+    .shape-soft {
+      border-radius: 12px;
+    }
+
+    .shape-round {
+      border-radius: 999px;
+    }
+
+    .shape-square {
+      border-radius: 3px;
+    }
+
+    /* Прогресс */
+
+    .progress {
+      position: absolute;
+
+      left: clamp(20px, 5vw, 48px);
+      right: clamp(20px, 5vw, 48px);
+      bottom: 18px;
+
+      z-index: 22;
+    }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+
+      margin-bottom: 7px;
+
+      font-size: 10px;
+      font-weight: 900;
+
+      text-shadow: 0 1px 5px #000;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+
+      border: 1px solid
+        rgba(255, 255, 255, 0.25);
+
+      border-radius: 999px;
+
+      background:
+        rgba(5, 9, 20, 0.55);
+    }
+
+    .progress-fill {
+      height: 100%;
+
+      border-radius: 999px;
+      background: var(--accent);
+
+      box-shadow:
+        0 0 14px var(--accent);
+
+      transition: width 0.5s;
+    }
+
+    .has-progress .overlay {
+      padding-bottom: 76px;
+    }
+
+    /* Эффекты */
+
+    .effect {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .fog::before,
+    .fog::after {
+      content: "";
+
+      position: absolute;
+      inset: -30%;
+
+      background:
+        radial-gradient(
+          ellipse at 30% 50%,
+          rgba(238, 243, 242, 0.79),
+          transparent 48%
+        ),
+        radial-gradient(
+          ellipse at 75% 40%,
+          rgba(191, 202, 201, 0.72),
+          transparent 52%
+        );
+
+      filter: blur(25px);
+
+      animation:
+        fogMove 5s ease-in-out
+        infinite alternate;
+    }
+
+    .fog::after {
+      transform: scaleX(-1);
+      opacity: 0.65;
+      animation-duration: 7s;
+    }
+
+    .rain {
+      background-image:
+        repeating-linear-gradient(
+          105deg,
+          transparent 0 12px,
+          rgba(189, 225, 255, 0.5) 13px 14px,
+          transparent 15px 24px
+        );
+
+      background-size: 180px 180px;
+
+      animation:
+        rainFall 0.45s linear infinite;
+    }
+
+    .fire {
+      top: 45%;
+
+      background:
+        radial-gradient(
+          ellipse at 15% 110%,
+          #ffeb3b 0 6%,
+          #ff6500 18%,
+          transparent 45%
+        ),
+        radial-gradient(
+          ellipse at 50% 115%,
+          #fff176 0 5%,
+          #ff3d00 22%,
+          transparent 48%
+        ),
+        radial-gradient(
+          ellipse at 85% 110%,
+          #
