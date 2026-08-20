@@ -455,15 +455,6 @@ textarea {
   gap: 8px;
 }
 
-.transition-grid {
-  display: grid;
-  grid-template-columns:
-    150px
-    minmax(0, 1fr);
-
-  gap: 8px;
-}
-
 .answer-card label {
   margin-bottom: 12px;
 }
@@ -661,7 +652,7 @@ textarea {
 
 .card-vintage {
   border: 3px solid
-    var(--border-color, #d8ae7b);
+    #d8ae7b;
 
   border-radius: 16px;
 
@@ -718,99 +709,6 @@ textarea {
 
   box-shadow:
     0 12px 35px rgba(0, 0, 0, 0.53);
-}
-
-/* Ответы */
-
-.player-answers {
-  display: grid;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.player-answer {
-  width: 100%;
-  padding: 11px;
-
-  display: flex;
-  align-items: center;
-  gap: 9px;
-
-  color: #fff;
-  background:
-    rgba(17, 24, 39, 0.74);
-
-  text-align: left;
-}
-
-.answer-standard {
-  border: 1px solid
-    rgba(255, 255, 255, 0.2);
-}
-
-.answer-vintage {
-  border: 2px solid
-    var(--border-color, #d8ae7b);
-
-  color: #f7e4c8;
-  background: rgba(26, 13, 9, 0.91);
-}
-
-.answer-double {
-  border: 4px double
-    var(--border-color, #d8ae7b);
-
-  background:
-    rgba(17, 24, 39, 0.79);
-}
-
-.answer-neon {
-  border: 1px solid
-    var(--border-color, #66ccff);
-
-  background:
-    rgba(7, 16, 29, 0.9);
-
-  box-shadow:
-    0 0 7px
-      var(--border-color, #66ccff);
-}
-
-.answer-dashed {
-  border: 2px dashed
-    var(--border-color, #d8ae7b);
-
-  background:
-    rgba(17, 24, 39, 0.67);
-}
-
-.answer-text {
-  border: 0;
-
-  border-bottom: 1px solid
-    var(--border-color, #fff);
-
-  border-radius: 0 !important;
-  background: transparent;
-}
-
-.player-answer:hover {
-  color: #101827;
-
-  background:
-    var(--player-accent, var(--accent));
-}
-
-.shape-soft {
-  border-radius: 12px;
-}
-
-.shape-round {
-  border-radius: 999px;
-}
-
-.shape-square {
-  border-radius: 3px;
 }
 
 /* Прогресс */
